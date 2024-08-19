@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+
+class RecommendationsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Personalized Recommendations')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            ListTile(
+              title: Text('Lifestyle Modifications'),
+              subtitle: Text('Recommendations for improving daily routines and well-being.'),
+            ),
+            ListTile(
+              title: Text('Exercise Routines'),
+              subtitle: Text('Exercise routines to enhance physical health.'),
+            ),
+            ListTile(
+              title: Text('Communication Strategies'),
+              subtitle: Text('Effective strategies for improving communication skills.'),
+            ),
+            // Add more recommendations as needed
+          ],
+        ),
+      ),
+    );
+  }
+}

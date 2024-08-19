@@ -1,0 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class RecommendationsService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Retrieve recommendations based on user preferences
+  Future<List<String>> fetchRecommendations(String userId) async {
+    List<String> recommendations = [];
+    try {
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?;
+        String userPreferences = userData?['preferences'] ?? '';
+        
+        // Query recommendations based on user preferences
+        QuerySnapshot recommendationDocs = await _firestore
+            .collection('recommendations')
+            .where('type', isEqualTo: userPreferences)
+            .get();
+        
+        for (var doc in recommendationDocs.docs) {
+          recommendations.add(doc['recommendation']);
+        }
+      }
+    } catch (e) {
+      print("Error fetching recommendations: $e");
+    }
+    return recommendations;
+  }
+}

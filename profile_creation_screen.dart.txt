@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class ProfileCreationScreen extends StatefulWidget {
+  @override
+  _ProfileCreationScreenState createState() => _ProfileCreationScreenState();
+}
+
+class _ProfileCreationScreenState extends State<ProfileCreationScreen> {
+  final _firestore = FirebaseFirestore.instance;
+  final _ageController = TextEditingController();
+  final _genderController = TextEditingController();
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
+  final _historyController = TextEditingController();
+  final _lifestyleController = TextEditingController();
+  final _pictureController = TextEditingController();
+
+  Future<void> _saveProfile() async {
+    final userId = 'currentUserId'; // Replace with actual user ID logic
+
+    await _firestore.collection('profiles').doc(userId).set({
+      'age': _ageController.text,
+      'gender': _genderController.text,
+      'height': _heightController.text,
+      'weight': _weightController.text,
+      'history': _historyController.text,
+      'lifestyle': _lifestyleController.text,
+      'picture': _pictureController.text,
+    });
+
+    Navigator.pushReplacementNamed(context, '/personalizedIcon');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Create Profile')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _ageController,
+              decoration: InputDecoration(labelText: 'Age'),
+            ),
+            TextField(
+              controller: _genderController,
+              decoration: InputDecoration(labelText: 'Gender'),
+            ),
+            TextField(
+              controller: _heightController,
+              decoration: InputDecoration(labelText: 'Height'),
+            ),
+            TextField(
+              controller: _weightController,
+              decoration: InputDecoration(labelText: 'Weight'),
+            ),
+            TextField(
+              controller: _historyController,
+              decoration: InputDecoration(labelText: 'History'),
+            ),
+            TextField(
+              controller: _lifestyleController,
+              decoration: InputDecoration(labelText: 'Lifestyle Habits'),
+            ),
+            TextField(
+              controller: _pictureController,
+              decoration: InputDecoration(labelText: 'Profile Picture URL'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _saveProfile,
+              child: Text('Save Profile'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

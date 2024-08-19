@@ -1,0 +1,58 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Register a user with email and password
+  Future<User?> registerWithEmailPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user;
+    } catch (e) {
+      print("Registration error: $e");
+      return null;
+    }
+  }
+
+  // Sign in a user with email and password
+  Future<User?> signInWithEmailPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user;
+    } catch (e) {
+      print("Sign-in error: $e");
+      return null;
+    }
+  }
+
+  // Send email verification
+  Future<void> sendVerificationEmail(User user) async {
+    try {
+      await user.sendEmailVerification();
+    } catch (e) {
+      print("Verification email error: $e");
+    }
+  }
+
+  // Verify OTP and sign in
+  Future<User?> verifyOtp(String otp, String verificationId) async {
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: otp,
+      );
+      UserCredential userCredential = await _auth.signInWithCredential(credential);
+      return userCredential.user;
+    } catch (e) {
+      print("OTP verification error: $e");
+      return null;
+    }
+  }
+}

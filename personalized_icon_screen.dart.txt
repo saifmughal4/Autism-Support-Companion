@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class PersonalizedIconScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userProfilePic = 'URL_TO_PROFILE_PIC'; // Replace with actual profile pic URL
+
+    return Scaffold(
+      appBar: AppBar(title: Text('Personalized Icon')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(userProfilePic),
+              radius: 50,
+            ),
+            SizedBox(height: 20),
+            Text('Welcome, ${user.displayName}!',
+                style: TextStyle(fontSize: 24)),
+            // More customization based on profile data can be added here
+          ],
+        ),
+      ),
+    );
+  }
+}
